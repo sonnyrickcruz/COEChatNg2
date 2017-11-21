@@ -1,15 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCardModule, MatInputModule, MatButtonModule } from '@angular/material';
+
 import { StompConfig, StompService } from '@stomp/ng2-stompjs'
 
 import { ServerSocketService } from './services/server-socket.service';
 
 import { AppComponent } from './app.component';
 import { ChatBoxComponent } from './components/chat-box/chat-box.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
-  { path: "chat-box", component: ChatBoxComponent }
+  { path: "chat-box", component: ChatBoxComponent },
+  { path: "login", component: LoginComponent },
 ]
 
 const stompConfig: StompConfig = {
@@ -34,17 +40,23 @@ const stompConfig: StompConfig = {
   reconnect_delay: 5000,
 
   // Will log diagnostics on console
-  debug: true
+  debug: false
 };
 
 @NgModule({
   declarations: [
     AppComponent,
     ChatBoxComponent,
+    LoginComponent,
   ],
   imports: [
+    FormsModule,
     BrowserModule,
-    RouterModule.forRoot(routes)
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatInputModule,
+    MatButtonModule,
+    RouterModule.forRoot(routes),
   ],
   providers: [
     ServerSocketService,
