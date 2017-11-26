@@ -1,6 +1,5 @@
-export class Message {
+export class MessageModel {
     sender: string;
     receiver: string;
     messageBody: string;
-    time: Date;
 }

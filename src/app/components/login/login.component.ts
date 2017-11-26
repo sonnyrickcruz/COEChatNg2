@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { StompService } from '@stomp/ng2-stompjs';
 import { Message } from '@stomp/stompjs';
-import { Subscription } from 'rxjs/Subscription'
-
+import { AuthService } from '../../services/auth.service';
 import { UserLogin } from '../../models/UserLogin';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -11,35 +12,42 @@ import { UserLogin } from '../../models/UserLogin';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  socketSubscription: Subscription;
-  username:string;
-  password:string;
-  constructor(private _stompService:StompService) { }
+  username: string;
+  password: string;
+  constructor(private _stompService: StompService,
+              private _auth: AuthService,
+              private _router: Router) { }
 
   ngOnInit() {
+    let stomp_subscription = this._stompService.subscribe('/client/login');
+    stomp_subscription.map((message: Message) => {
+      return message.body
+    }).subscribe((body: string) => {
+      console.log(body)
+      let user:User = JSON.parse(body);
+      if (user) {
+        this._auth.setUser(user);
+        if (this._auth.getUser()) {
+          this._router.navigate(['/chat-box']);
+        }
+      }
+    })
   }
 
   login() {
-    alert(this.username);
-    alert(this.password)
+    console.log(this.username);
+    console.log(this.password);
     if (this.username && this.password) {
-      let userLogin:UserLogin = {
+      let userLogin: UserLogin = {
         username: this.username,
         password: this.password
       }
-      
-      this._stompService.publish('/server/login', JSON.stringify(userLogin));
 
-      let stomp_subscription = this._stompService.subscribe('client/login');
-      stomp_subscription.map((message:Message) => {
-        return message.body
-      }).subscribe((body:string) => {
-        console.log(body)
-      })
+      this._stompService.publish('/app/login', JSON.stringify(userLogin));
     }
   }
 
   ngOnDestroy() {
-    this.socketSubscription.unsubscribe();
+    this._stompService.disconnect();
   }
 }

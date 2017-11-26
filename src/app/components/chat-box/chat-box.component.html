@@ -1,3 +1,16 @@
-<p>
-  chat-box works!
-</p>
+<mat-card>
+  <mat-form-field>
+    <input matInput [(ngModel)]="receiver" placeholder="Receiver">
+  </mat-form-field>
+  <mat-chip-list class="mat-chip-list-stacked">
+    <mat-chip selected="true" color="primary" *ngFor="let message of messageThread">
+      hey
+    </mat-chip>
+  </mat-chip-list>
+  <form (submit)="sendMessage()">
+    <mat-form-field>
+      <input matInput placeholder="Type a message..." name="message" [(ngModel)]="message">
+    </mat-form-field>
+    <button mat-mini-fab color="primary" type="submit">></button>
+  </form>
+</mat-card>
