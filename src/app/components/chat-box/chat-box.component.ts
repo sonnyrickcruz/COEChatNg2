@@ -3,6 +3,7 @@ import { StompService } from '@stomp/ng2-stompjs';
 import { Message } from '@stomp/stompjs';
 import { Subscription } from 'rxjs/Subscription';
 import { MessageModel } from '../../models/Message';
+import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -14,11 +15,13 @@ export class ChatBoxComponent implements OnInit {
   private receiver: string;
   private message: string;
   private messageThread: MessageModel[] = [];
+  private user:User;
 
   constructor(private _stompService: StompService,
               private _auth: AuthService) { }
 
   ngOnInit() {
+    this.user = this._auth.getUser();
     let stompSubscription = this._stompService.subscribe("/user/queue/message");
     stompSubscription.map((message: Message) => {
       return message.body;
@@ -42,7 +45,7 @@ export class ChatBoxComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this._stompService.disconnect;
+    //this._stompService.disconnect;
   }
 
 }

@@ -3,8 +3,10 @@
     <input matInput [(ngModel)]="receiver" placeholder="Receiver">
   </mat-form-field>
   <mat-chip-list class="mat-chip-list-stacked">
-    <mat-chip selected="true" color="primary" *ngFor="let message of messageThread">
-      hey
+    <mat-chip selected="true" *ngFor="let message of messageThread" [ngClass]="{'current-user-sender':user.username == message.sender}">
+      {{user.username == message.sender}}
+      {{message.sender}}
+      {{message.messageBody}}
     </mat-chip>
   </mat-chip-list>
   <form (submit)="sendMessage()">

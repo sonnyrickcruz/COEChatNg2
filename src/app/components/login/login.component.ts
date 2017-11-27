@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
               private _router: Router) { }
 
   ngOnInit() {
-    let stomp_subscription = this._stompService.subscribe('/client/login');
+    let stomp_subscription = this._stompService.subscribe('/user/client/login');
     stomp_subscription.map((message: Message) => {
       return message.body
     }).subscribe((body: string) => {
@@ -48,6 +48,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this._stompService.disconnect();
+    //this._stompService.disconnect();
   }
 }
