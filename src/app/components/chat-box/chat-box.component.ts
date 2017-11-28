@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { StompService } from '@stomp/ng2-stompjs';
 import { Message } from '@stomp/stompjs';
 import { Subscription } from 'rxjs/Subscription';
@@ -12,21 +12,23 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./chat-box.component.css']
 })
 export class ChatBoxComponent implements OnInit {
-  private receiver: string;
+  @Input() receiver: string;
   private message: string;
   private messageThread: MessageModel[] = [];
-  private user:User;
+  private currentUser: User;
 
   constructor(private _stompService: StompService,
-              private _auth: AuthService) { }
+    private _auth: AuthService) { }
 
   ngOnInit() {
-    this.user = this._auth.getUser();
+    this.currentUser = this._auth.getUser();
+    console.log("current user: " + JSON.stringify(this.currentUser))
     let stompSubscription = this._stompService.subscribe("/user/queue/message");
     stompSubscription.map((message: Message) => {
       return message.body;
     }).subscribe((body: string) => {
-      if (body) {
+      let message:MessageModel = JSON.parse(body)
+      if (message && message.receiver != message.sender) {
         console.log(body)
         this.messageThread.push(JSON.parse(body));
       }
@@ -35,11 +37,13 @@ export class ChatBoxComponent implements OnInit {
 
   sendMessage(event): void {
     console.log("Sending message");
-    let message:MessageModel = {
+    let message: MessageModel = {
       sender: this._auth.getUser().username,
       receiver: this.receiver,
       messageBody: this.message
     };
+    this.messageThread.push(message);
+    this.message = "";
     console.log(JSON.stringify(message))
     this._stompService.publish("/app/message", JSON.stringify(message));
   }

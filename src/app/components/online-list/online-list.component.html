@@ -1,0 +1,7 @@
+<mat-selection-list>
+  <mat-list-item class="online-users" (click)="openUser(user)" *ngFor="let user of users">
+    <mat-icon matListIcon>fiber_manual_record</mat-icon>
+    {{user.firstName}} {{user.lastName}}
+  </mat-list-item>
+</mat-selection-list>
+<app-chat-box *ngIf="currentReciever" [receiver]="currentReciever"></app-chat-box>

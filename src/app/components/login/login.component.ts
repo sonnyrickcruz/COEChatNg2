@@ -19,19 +19,21 @@ export class LoginComponent implements OnInit {
               private _router: Router) { }
 
   ngOnInit() {
-    let stomp_subscription = this._stompService.subscribe('/user/client/login');
-    stomp_subscription.map((message: Message) => {
-      return message.body
-    }).subscribe((body: string) => {
-      console.log(body)
-      let user:User = JSON.parse(body);
-      if (user) {
-        this._auth.setUser(user);
-        if (this._auth.getUser()) {
-          this._router.navigate(['/chat-box']);
+    //if (!this._auth.getUser()) {
+      let stomp_subscription = this._stompService.subscribe('/user/client/login');
+      stomp_subscription.map((message: Message) => {
+        return message.body
+      }).subscribe((body: string) => {
+        console.log(body)
+        let user:User = JSON.parse(body);
+        if (user) {
+          this._auth.setUser(user);
+          if (this._auth.getUser()) {
+            this._router.navigate(['/chat']);
+          }
         }
-      }
-    })
+      })
+    //}
   }
 
   login() {

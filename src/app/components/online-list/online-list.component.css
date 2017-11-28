@@ -1,0 +1,14 @@
+mat-list-item:hover {
+    cursor: pointer;
+    background-color: #f2f2f2;
+}
+
+.online-users mat-icon {
+    color: #66BB6A;
+    font-size: 10px;
+    line-height: 22px;
+}
+
+.online-users {
+    text-transform: capitalize;
+}

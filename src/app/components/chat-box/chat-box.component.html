@@ -1,18 +1,15 @@
 <mat-card>
-  <mat-form-field>
-    <input matInput [(ngModel)]="receiver" placeholder="Receiver">
-  </mat-form-field>
+  <mat-toolbar color="primary">{{receiver}}</mat-toolbar>
   <mat-chip-list class="mat-chip-list-stacked">
-    <mat-chip selected="true" *ngFor="let message of messageThread" [ngClass]="{'current-user-sender':user.username == message.sender}">
-      {{user.username == message.sender}}
+    <mat-chip selected="true" *ngFor="let message of messageThread" [ngClass]="{'current-user-sender':currentUser.username == message.sender}">
       {{message.sender}}
       {{message.messageBody}}
     </mat-chip>
   </mat-chip-list>
   <form (submit)="sendMessage()">
     <mat-form-field>
-      <input matInput placeholder="Type a message..." name="message" [(ngModel)]="message">
+      <input matInput placeholder="Type a message..." name="message" [(ngModel)]="message" autocomplete="off">
     </mat-form-field>
-    <button mat-mini-fab color="primary" type="submit">></button>
+    <button mat-mini-fab color="primary" type="submit" class="send-button"><mat-icon>send</mat-icon></button>
   </form>
 </mat-card>
