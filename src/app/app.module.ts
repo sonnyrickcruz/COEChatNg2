@@ -27,7 +27,8 @@ const stompConfig: StompConfig = {
   // Typical keys: login, passcode, host
   headers: {
     login: null,
-    passcode: null
+    passcode: "3a215642-b532-4f44-9d9c-962d969ec679",
+    access_token: "3a215642-b532-4f44-9d9c-962d969ec679"
   },
   heartbeat_in: 0, // Typical value 0 - disabled
   heartbeat_out: 20000, // Typical value 20000 - every 20 seconds
